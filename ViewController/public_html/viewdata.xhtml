@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+        <title>viewdata.html</title>
+    </head>
+    <body>
+    
+    <p:dataTable var="user" value="#{dtBasicView.user}">
+    <p:column headerText="Id">
+        <h:outputText value="#{user.id}" />
+    </p:column>
+ 
+    <p:column headerText="Year">
+        <h:outputText value="#{user.year}" />
+    </p:column>
+ 
+    <p:column headerText="Brand">
+        <h:outputText value="#{user.name}" />
+    </p:column>
+ 
+    <p:column headerText="Color">
+        <h:outputText value="#{user.faculty}" />
+    </p:column>
+</p:dataTable>
+
+    </body>
+</html>
