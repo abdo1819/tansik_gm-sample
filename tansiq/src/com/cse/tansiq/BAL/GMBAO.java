@@ -8,36 +8,43 @@ import java.util.ArrayList;
 
 public interface GMBAO    {
   
+    public final int student_role = 0;
+    public final int admin_role = 1;
+    public final int gm_role = 2;
+  
+  
     /**
      * aouthor :abdelrhman ragab hashem
      * date : 12/2
-     * returns a list of all admins in the DB if the DataBase is found and the view will update its pages (the page that will have the result) according to that list  
+     * returns a list of all users in data base
      *
      * @param void no need for params
      * @return List<Users> 
      *        
      *  */  
   
-  public ArrayList<com.cse.tansiq.DTO.User>  getAllAdmins();
+    public ArrayList<User> getUsers();
+   
   
     /**
      * aouthor :abdelrhman ragab hashem
      * date : 12/2
-     * returns a list of all students in the DB if the DataBase is found and the view will update its pages (the page that will have the result) according to that list  
+     * returns a list of users in database with certain role  
      *
      * @param void no need for params
      * @return List<Users> 
      *        
      *  */  
-  public ArrayList<com.cse.tansiq.DTO.User>  getAllStudent();
-    
+  
+    public ArrayList<User> getUsers(Integer role);
+ 
     
     /**
      * aouthor :abdelrhman ragab hashem
      * date : 12/2
      * 
      * 
-     * returns a list of all users in the DB 
+     * returns a list of all users in the DB with role and edu year
      * 
      * if the DataBase is found and the view will update its pages (the page that will have the result) 
      * according to that list  
@@ -46,8 +53,15 @@ public interface GMBAO    {
      * @return List<Users> 
      *        
      *  */  
-  public ArrayList<com.cse.tansiq.DTO.User> getALLUsers();
-    
+ 
+    public  ArrayList<User> getUsers(Integer role,EduYear edu_year);
+
+    public  ArrayList<User> getUsers(Integer role,EduYear edu_year,int id);
+
+    public  ArrayList<EduYear> getEduYear();
+
+
+
 
 
     /**

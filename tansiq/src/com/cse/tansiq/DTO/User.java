@@ -97,11 +97,11 @@ public class User {
         return false;
     }
 
-//    @Override
-//    public String toString() {
-//        return id+"   -- " +firstName+" "+secondName+" "+lastName+"--/"+eduyear.getFaculty()+"--/"+eduyear.getYear()+"---/ "+email;
-////        return (this.id + " " + " " + this.userName + " " + this.email);
-//    }
+    @Override
+    public String toString() {
+        return id+"   -- " +firstName+" "+secondName+" "+lastName+"--/"+eduyear.getFaculty()+"--/"+eduyear.getYear()+"---/ "+email;
+//        return (this.id + " " + " " + this.userName + " " + this.email);
+    }
 
     public void setEmail(String email) {
         this.email = email;

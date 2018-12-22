@@ -4,6 +4,8 @@ package com.cse.tansiq.backing;
 
 import com.cse.tansiq.BAL.BAOfactory;
 import com.cse.tansiq.BAL.GMBAO;
+import com.cse.tansiq.DAL.GMDAO;
+import com.cse.tansiq.DTO.EduYear;
 import com.cse.tansiq.DTO.User;
 
 import java.io.Serializable;
@@ -27,52 +29,20 @@ import javax.faces.model.SelectItemGroup;
 
 public class BasicView {
     
-    private Integer slectedUserOption;
+    private Integer slectedUserOption ;
     private Integer slectedFacultyOption;
     private Integer slectedYearOption;
+    private EduYear slectedEduYear;
 
-    public void setSlectedFacultyOption(Integer slectedFacultyOption) {
-        this.slectedFacultyOption = slectedFacultyOption;
+    private void setSlectedEduYear(){
+        
+        //TODO solve null pointer exeption from map
+//        int faculty = facultyMap.get(slectedFacultyOption);
+//        if(slectedYearOption != null) 
+//            slectedEduYear.setYear(slectedYearOption);
+//        slectedEduYear.setFaculty(faculty.toString());
     }
-
-    public Integer getSlectedFacultyOption() {
-        return slectedFacultyOption;
-    }
-
-    public void setSlectedYearOption(Integer slectedYearOption) {
-        this.slectedYearOption = slectedYearOption;
-    }
-
-    public Integer getSlectedYearOption() {
-        return slectedYearOption;
-    }
-
-
-    public void setUserMap(Map<String, Integer> usersMap) {
-        this.userMap = usersMap;
-    }
-
-    public Map<String, Integer> getUserMap() {
-        return userMap;
-    }
-
-    public void setFacultyMap(Map<String, Integer> facultyMap) {
-        this.facultyMap = facultyMap;
-    }
-
-    public Map<String, Integer> getFacultyMap() {
-        return facultyMap;
-    }
-
-    public void setYearMap(Map<String, Integer> yearMap) {
-        this.yearMap = yearMap;
-    }
-
-    public Map<String, Integer> getYearMap() {
-        return yearMap;
-    }
-
-
+    
     private List<User> users;
     private GMBAO gm = BAOfactory.createGMBAO();
     private Map<String, Integer> userMap; 
@@ -81,15 +51,16 @@ public class BasicView {
     
     @PostConstruct
     public void init() {
-        //move to button method
-        users = gm.getALLUsers();
+
         
         //map for user selection
         userMap = new HashMap<>();
-        userMap.put("Student", 1);
-        userMap.put("Admin", 2);
+        userMap.put("Student", GMBAO.student_role);
+        userMap.put("Admin", GMBAO.admin_role);
         
-        //map for faculty sould be dynamic get edu year first
+        //TODO map for faculty sould be dynamic get edu year first
+        List<User> user;
+
         facultyMap = new HashMap<>();
         facultyMap.put("engi",1);
         facultyMap.put("scince",2);
@@ -103,10 +74,15 @@ public class BasicView {
     
     public String search(){
     //use data layer
-        System.out.println(slectedUserOption+"  -  "+slectedFacultyOption+"  -  "+slectedYearOption); 
-        gm.getALLUsers(); 
-        gm.getAllStudent();
-        gm.getAllAdmins();
+        System.out.println(slectedUserOption+"  -  "+slectedFacultyOption+"  -  "+slectedYearOption);
+//        System.out.println(facultyMap.get(slectedFacultyOption).toString());
+//         
+        if (slectedUserOption==null && slectedFacultyOption==null)
+            users = gm.getUsers();     
+        else if (slectedUserOption!=null && slectedFacultyOption==null)
+            users = gm.getUsers(slectedUserOption);
+//        else if (slectedUserOption!=null && slectedFacultyOption!=null)
+//            users = gm.getUsers(slectedUserOption,);            
         return null;
     }
         
@@ -154,4 +130,48 @@ public class BasicView {
     public Integer getSlectedUserOption() {
         return slectedUserOption;
     }
+    public void setSlectedFacultyOption(Integer slectedFacultyOption) {
+        this.slectedFacultyOption = slectedFacultyOption;
+        setSlectedEduYear();
+    }
+
+    public Integer getSlectedFacultyOption() {
+        return slectedFacultyOption;
+    }
+
+    public void setSlectedYearOption(Integer slectedYearOption) {
+        this.slectedYearOption = slectedYearOption;
+        setSlectedEduYear();
+    }
+
+    public Integer getSlectedYearOption() {
+        return slectedYearOption;
+    }
+
+
+    public void setUserMap(Map<String, Integer> usersMap) {
+        this.userMap = usersMap;
+    }
+
+    public Map<String, Integer> getUserMap() {
+        return userMap;
+    }
+
+    public void setFacultyMap(Map<String, Integer> facultyMap) {
+        this.facultyMap = facultyMap;
+    }
+
+    public Map<String, Integer> getFacultyMap() {
+        return facultyMap;
+    }
+
+    public void setYearMap(Map<String, Integer> yearMap) {
+        this.yearMap = yearMap;
+    }
+
+    public Map<String, Integer> getYearMap() {
+        return yearMap;
+    }
+
+    
 }

@@ -18,9 +18,26 @@ public class GMDAOImpl implements GMDAO {
     private static String username = "hr";
     private static String password = "hr";
 
-
+    private String user_query =
+        "select * from users u  " + "inner join student s " + "on u.id = s.user_id " 
+        + "inner join edu_level e " +
+        "on s.edu_level =e.id  ";
    
-
+   
+   
+    public void resetFilter(){
+        user_query =
+                "select * from users u  " + "inner join student s " + "on u.id = s.user_id " 
+                + "inner join edu_level e " +
+                "on s.edu_level =e.id  ";
+        filtered = false;
+    }
+   
+   
+    private boolean filtered;
+    
+    
+    
     @Override
     public boolean isExist(User user) {
         // TODO Implement this method
@@ -43,30 +60,41 @@ public class GMDAOImpl implements GMDAO {
 
     @Override
     public ArrayList<User> getUsers() {
-        return send_user_query(" and 1=1 ");
+        return send_user_query();
     }
     
     
 
-    public ArrayList<User> getUsers(int role) {
-        
-            String query_add = " and u.role = "+role;
-        return send_user_query(query_add);
-
-    }
-    
-    
-    public ArrayList<User> getUsers(int role , int edu_year_id) {
-        String query_add;
-        if(role >=0)
-        query_add = " and u.role = "+role;                
+    public void setUsersFilter(int role) {
+        if (!filtered)
+            user_query += " where u.role = "+role;    
         else
-        query_add = " and 1=1 " ;
-// remove 1=1
-        query_add += " and e.id = "+edu_year_id;
-        return send_user_query(query_add);
-
-    }    
+            user_query += " and u.role = "+role;    
+     
+        filtered = true;
+                
+    }
+    
+    public void setUsersFilter(EduYear edu_year){
+        if (!filtered)
+            user_query += " where e.FACULTY = '" + edu_year.getFaculty()+"' ";
+        else
+            user_query += " and e.FACULTY = '" + edu_year.getFaculty()+"' ";
+             
+        if(edu_year.getYear()>0)
+            user_query += " and e.YEAR = " + edu_year.getYear();
+            
+        filtered = true;
+        }
+    
+    public void setUsersFilter(User user){
+        if (!filtered)
+            user_query += " where u.id = " + user.getId();
+        else
+            user_query += " and u.id = " + user.getId();
+    
+        }
+        
     
     
     public ArrayList<Page> get_all_Pages(){
@@ -91,20 +119,14 @@ public class GMDAOImpl implements GMDAO {
      */
 
     
-    private ArrayList<User> send_user_query(String query_add){
-        
-        String query =
-            "select * from users u  " + "inner join student s " + "on u.id = s.user_id " 
-            + "inner join edu_level e " +
-            "on s.edu_level =e.id where 1=1 ";
-        
-        query += query_add;
+    private ArrayList<User> send_user_query(){
+        //TODO remove 1=1 -- done miss testing
         
     ArrayList<User> users = new ArrayList<User>();
 
     try (Connection myConn = DriverManager.getConnection(url, "hr", "hr");
          Statement myStmt = myConn.createStatement();
-         ResultSet myRes = myStmt.executeQuery(query)) {
+         ResultSet myRes = myStmt.executeQuery(user_query)) {
 
         users = extract_users_from_Rs(myRes);
 
@@ -115,6 +137,53 @@ public class GMDAOImpl implements GMDAO {
 
     return users;
     }    
+
+
+    private ArrayList<EduYear> send_eduyear_query(){
+     
+    ArrayList<EduYear> eduyears = new ArrayList<>();
+
+    try (Connection myConn = DriverManager.getConnection(url, "hr", "hr");
+         Statement myStmt = myConn.createStatement();
+         ResultSet myRes = myStmt.executeQuery(eduyear_query)) {
+
+        eduyears = extract_eduyears_from_Rs(myRes);
+
+        }
+    catch (Exception ex) {
+        ex.printStackTrace();
+    }
+
+    return eduyears;
+    }    
+
+    private String eduyear_query= "select * from edu_level";
+
+    public ArrayList<EduYear> getEduYear(){
+        return send_eduyear_query();
+    }
+    
+    
+    private ArrayList<EduYear> extract_eduyears_from_Rs(ResultSet myRes) throws SQLException{
+        ArrayList<EduYear> eduyears = new ArrayList<>();
+        while (myRes.next()){
+            EduYear eduyear = new EduYear();
+            
+            eduyear.setYear(myRes.getInt("year"));
+            eduyear.setFaculty(myRes.getString("faculty"));
+            eduyears.add(eduyear);            
+        }
+    
+    
+        return eduyears;    
+    }
+    
+    
+    
+    
+    
+    
+    
     
 //TODO make connect generic
     private ArrayList<Page> send_page_query(String query_add){
@@ -157,11 +226,7 @@ private ArrayList<User> extract_users_from_Rs(ResultSet myRes) throws SQLExcepti
                 user.setLastName(myRes.getString("LAST_NAME"));
                 user.setRole(myRes.getInt("ROLE"));
                 EduYear eduyear = new EduYear();
-
-                //                        university need to be added to edu_year
-                //                        University university = new University();
-                //                        university.setName(myRes.getString("LAST_NAME"));
-
+ 
                 eduyear.setYear(myRes.getInt("year"));
                 eduyear.setFaculty(myRes.getString("faculty"));
                 user.setEduyear(eduyear);
@@ -320,4 +385,10 @@ private ArrayList<User> extract_users_from_Rs(ResultSet myRes) throws SQLExcepti
         // TODO Implement this method
         return Collections.emptyList();
     }
+    
+    
+   
+
+    
+    
 }

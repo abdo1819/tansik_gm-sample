@@ -25,9 +25,12 @@ public interface GMDAO extends AdminDAO {
      * @return
      */
   public ArrayList<User> getUsers();
-  public ArrayList<User> getUsers(int role);
-  public  ArrayList<User> getUsers(int role,int edu_year);
+  public void setUsersFilter(int role);
+  public  void setUsersFilter(EduYear edu_year);
+  public  void setUsersFilter(User user);
+  public void resetFilter();
 
+  public ArrayList<EduYear> getEduYear();
 
 
     /**

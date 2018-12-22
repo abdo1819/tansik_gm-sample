@@ -83,29 +83,30 @@ public class Main_test {
 
     }
 
-    static void print_all_users(int role){
-        ArrayList<User> users = new ArrayList<User>();
-        users = gm.getUsers(role); 
-        for (User user : users){
-            System.out.print(user.toString()+"\n");    
-        }
-        System.out.print("end of users"+"\n"+"\n");    
+//    static void print_all_users(int role){
+//        ArrayList<User> users = new ArrayList<User>();
+//        users = gm.getUsers(role); 
+//        for (User user : users){
+//            System.out.print(user.toString()+"\n");    
+//        }
+//        System.out.print("end of users"+"\n"+"\n");    
+//
+//    }
 
-    }
 
-    static void print_all_users(int role,int edu_year){
-        ArrayList<User> users = new ArrayList<User>();
-        users = gm.getUsers(role,edu_year); 
-        for (User user : users){
-            System.out.print(user.toString()+"\n");    
-        }
-        System.out.print("end of users"+"\n"+"\n");    
-    }
+//    static void print_all_users(int role,int edu_year){
+//        ArrayList<User> users = new ArrayList<User>();
+//        users = gm.getUsers(role,edu_year); 
+//        for (User user : users){
+//            System.out.print(user.toString()+"\n");    
+//        }
+//        System.out.print("end of users"+"\n"+"\n");    
+//    }
 
 
     static void print_users_by_bal(){
         ArrayList<User> users = new ArrayList<User>();
-        users = gmbao.getALLUsers();
+        users = gmbao.getUsers();
         
         for (User user : users){
             System.out.print(user.toString()+"\n");    
@@ -117,7 +118,7 @@ public class Main_test {
     static void print_admins_by_bal(){
 
         ArrayList<User> users = new ArrayList<User>();
-        users = gmbao.getAllAdmins();
+        users = gmbao.getUsers(GMBAO.admin_role);
         
         for (User user : users){
             System.out.print(user.toString()+"\n");    
@@ -131,16 +132,52 @@ public class Main_test {
     static void print_students_by_bal(){
         
         ArrayList<User> users = new ArrayList<User>();
-        users = gmbao.getAllStudent();
+        users = gmbao.getUsers(GMBAO.student_role);
         
         for (User user : users){
             System.out.print(user.toString()+"\n");    
         }
-        System.out.print("end of users"+"\n"+"\n");    
-
+        System.out.print("end of users"+"\n"+"\n");      
+        
+    }
     
+    static void print_students_withedu_by_bal(){
         
+        ArrayList<User> users = new ArrayList<User>();
+        EduYear eduYear = new EduYear();
+        eduYear.setFaculty("computer");
+        users = gmbao.getUsers(-1,eduYear);
         
+        for (User user : users){
+            System.out.print(user.toString()+"\n");    
+        }
+        System.out.print("end of users"+"\n"+"\n");      
+        
+    }
+    
+    static void print_students_withid_by_bal(){
+        
+        ArrayList<User> users = new ArrayList<User>();
+        EduYear eduYear = new EduYear();
+        eduYear.setFaculty("computer");
+        users = gmbao.getUsers(GMBAO.admin_role,eduYear,2);
+        
+        for (User user : users){
+            System.out.print(user.toString()+"\n");    
+        }
+        System.out.print("end of users"+"\n"+"\n");      
+        
+    }
+    
+    static void print_eduyear(){
+        
+        ArrayList<EduYear> eduYears= new ArrayList<>();
+        eduYears = gmbao.getEduYear();
+        
+        for (EduYear eduyear : eduYears){
+            System.out.print(eduyear.toString()+"\n");    
+        }
+        System.out.print("end of eduyear"+"\n"+"\n");      
         
     }
     
@@ -154,10 +191,15 @@ public class Main_test {
     public static void main(String[] args) {
         
         ///////        test gmbal
-                print_students_by_bal();
-                print_users_by_bal();
-                print_admins_by_bal();
-//
+//        print_users_by_bal();
+//        print_admins_by_bal();
+//        print_students_by_bal();
+//        print_students_withedu_by_bal();
+//        print_students_withid_by_bal();
+        //
+        print_eduyear();
+        
+        
 //        print_all_users();
 //        print_all_users(0);
 //        print_all_users(1);
@@ -170,10 +212,10 @@ public class Main_test {
 //        print_all_page();
 //        print_all_page(0);
 
-        print_all_page_bal();
-        print_all_page_bal_admin();
-        print_all_page_bal_student();
-        
+//        print_all_page_bal();
+//        print_all_page_bal_admin();
+//        print_all_page_bal_student();
+//        
     
     }
 }

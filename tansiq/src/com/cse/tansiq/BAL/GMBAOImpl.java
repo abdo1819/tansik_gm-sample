@@ -13,22 +13,15 @@ import java.util.List;
 
 
 
+
 public class GMBAOImpl implements GMBAO {
-   
-        private DAOfactory facto = new DAOfactory();
-        private GMDAO gmDAO = facto.createGMDAO();
-        
-   
-   
-   
-        @Override
-        public ArrayList<com.cse.tansiq.DTO.User> getALLUsers(){
-            return gmDAO.getUsers();
-        }
-   
-   
-   
-        @Override
+
+    private DAOfactory facto = new DAOfactory();
+    private GMDAO gmDAO = facto.createGMDAO();
+
+  
+
+    @Override
     public ArrayList<Page> get_all_pages() {
         return gmDAO.get_all_Pages();
     }
@@ -45,7 +38,10 @@ public class GMBAOImpl implements GMBAO {
     }
    
    
-   
+    public  ArrayList<EduYear> getEduYear(){
+        return gmDAO.getEduYear();
+    }
+
    
 //    @Override
 //    /**
@@ -104,35 +100,75 @@ public class GMBAOImpl implements GMBAO {
    
    
    
+        @Override
+        public ArrayList<com.cse.tansiq.DTO.User> getUsers(){
+            gmDAO.resetFilter();
+
+            return gmDAO.getUsers();
+            //TODO handle exeptions
+        }
+   
+   
     @Override
 //returns a list of all admins in the DB if the DataBase is found and the view will update its pages (the page that will have the result) according to that list  
-    public ArrayList<User> getAllAdmins() {
-        // if (no exception arises )       
-                return gmDAO.getUsers(1);
-        //else 
-        /*
-        {
-            //handle the exception that arises if DataBase not found
-            return empty list if exception happens (no data base)                
-           return Collections.emptyList();
+    public ArrayList<User> getUsers(Integer role){
+                gmDAO.resetFilter();
 
-        }
-        */
+                gmDAO.setUsersFilter(role);
+                return gmDAO.getUsers();
+                
+        //TODO handle exeptions
     }
 
     @Override
-    public ArrayList<User> getAllStudent() {
+    //put -1 for no user filter
+    public ArrayList<User> getUsers(Integer role,EduYear eduyear) {
+         gmDAO.resetFilter();
+         
+        if(role>=0)
+            gmDAO.setUsersFilter(role);
+        gmDAO.setUsersFilter(eduyear);
 
-        // if (no exception arises )       
-                return gmDAO.getUsers(0);
-        //else 
-                //handle the exception that arises if DataBase not found
-        // return empty list if exception happens (no data base)                
-    
+        return gmDAO.getUsers();
+
+        //TODO handle exeptions        
  }
+    
+    
+    public ArrayList<User> getUsers(Integer role,EduYear eduyear,int id) {
+         gmDAO.resetFilter();
+         
+         if(role>=0)
+            gmDAO.setUsersFilter(role);
+         if(eduyear.getFaculty()!="all")
+            gmDAO.setUsersFilter(eduyear);
+         User user = new User();
+         user.setId(id);
+         
+         gmDAO.setUsersFilter(user);
+       
+        return gmDAO.getUsers();
 
+        //TODO handle exeptions        
+    }
+
+    public  ArrayList<User> getUsers(EduYear eduyear){
+        gmDAO.resetFilter();
+        
+        gmDAO.setUsersFilter(eduyear);
+        return gmDAO.getUsers();
+
+        //TODO handle exeptions
+    }
    
+    public  ArrayList<User> getUsers(User user){
+        
+        gmDAO.setUsersFilter(user);
+        return gmDAO.getUsers();
 
+        
+    }
+    
  
 //    @Override
 //    /**

@@ -50,7 +50,7 @@ public class EduYear {
 
     @Override
     public String toString() {
-        return this.id + " " + this.getYear();
+        return this.id + " " + this.getYear()+ " "+this.faculty;
     }
 
 }
