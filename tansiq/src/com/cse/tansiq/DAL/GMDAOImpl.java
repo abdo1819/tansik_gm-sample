@@ -94,7 +94,8 @@ public class GMDAOImpl implements GMDAO {
     private ArrayList<User> send_user_query(String query_add){
         
         String query =
-            "select * from users u  " + "inner join student s " + "on u.id = s.user_id " + "inner join edu_level e " +
+            "select * from users u  " + "inner join student s " + "on u.id = s.user_id " 
+            + "inner join edu_level e " +
             "on s.edu_level =e.id where 1=1 ";
         
         query += query_add;
